@@ -36,7 +36,7 @@ class RelaxationIntegrator(_ode.IntegratorBase):
                  nsteps=500,
                  method=None,
                  verbosity=1,
-                ):
+                 ):
         self.rtol = rtol
         self.atol = atol
         self.nsteps = nsteps
