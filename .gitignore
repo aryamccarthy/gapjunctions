@@ -1,3 +1,6 @@
+# File produced during testing ODE
+fort.1
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
