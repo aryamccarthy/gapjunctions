@@ -4,11 +4,11 @@ Tests for numerical integration.
 """
 from __future__ import division, print_function, absolute_import
 
-from numpy import allclose, array, dot, pi, sqrt, sin, cos, zeros
+from numpy import allclose, array, dot, exp, pi, sqrt, sin, cos, zeros
 from numpy.testing import (assert_, TestCase, run_module_suite,
                            assert_array_almost_equal, assert_allclose,
                            assert_array_equal, assert_equal)
-from scipy.integrate import odeint, ode
+from scipy.integrate import ode
 
 from gapjunctions import ode as myode
 
@@ -178,12 +178,36 @@ class SimpleOscillator(ODE):
         tmp = zeros((2, 2), float)
         tmp[0, 1] = 1.0
         tmp[1, 0] = -self.k / self.m
+        f.matrix = tmp  # CRITICAL
         return dot(tmp, z)
 
     def verify(self, zs, t):
         omega = sqrt(self.k / self.m)
         u = (self.z0[0] * cos(omega * t) +
              self.z0[1] * sin(omega * t) / omega)
+        return allclose(u, zs[:, 0], atol=self.atol, rtol=self.rtol)
+
+
+class SimpleExponential(ODE):
+    r"""
+    Continuous compounding growth::
+        \dot{u} = k u
+    Solution::
+        u(t) = u_0*exp(0.5*t)
+    """
+    stop_t = 1 + 0.09
+    z0 = array([1.0], float)
+
+    k = 0.5
+
+    def f(self, z, t):
+        tmp = zeros((1, 1), float)
+        tmp[0, 0] = self.k
+        f.matrix = tmp  # CRITICAL
+        return dot(tmp, z)
+
+    def verify(self, zs, t):
+        u = (self.z0[0] * exp(self.k * t))
         return allclose(u, zs[:, 0], atol=self.atol, rtol=self.rtol)
 
 
@@ -298,53 +322,6 @@ class ODECheckParameterUse(object):
 class RelaxationCheckParameterUse(ODECheckParameterUse, TestCase):
     solver_name = 'relax'
     solver_uses_jac = False
-
-
-def test_odeint_banded_jacobian():
-    # Test the use of the `Dfun`, `ml` and `mu` options of odeint.
-
-    def func(y, t, c):
-        return c.dot(y)
-
-    def jac(y, t, c):
-        return c
-
-    def bjac_cols(y, t, c):
-        return np.column_stack((np.r_[0, np.diag(c, 1)], np.diag(c)))
-
-    def bjac_rows(y, t, c):
-        return np.row_stack((np.r_[0, np.diag(c, 1)], np.diag(c)))
-
-    c = array([[-50, 75, 0],
-               [0, -0.1, 1],
-               [0, 0, -1e-4]])
-
-    y0 = arange(3)
-    t = np.linspace(0, 50, 6)
-
-    # The results of the following three calls should be the same.
-    sol0, info0 = odeint(func, y0, t, args=(c,), full_output=True,
-                         Dfun=jac)
-
-    sol1, info1 = odeint(func, y0, t, args=(c,), full_output=True,
-                         Dfun=bjac_cols, ml=0, mu=1, col_deriv=True)
-
-    sol2, info2 = odeint(func, y0, t, args=(c,), full_output=True,
-                         Dfun=bjac_rows, ml=0, mu=1)
-
-    # These could probably be compared using `assert_array_equal`.
-    # The code paths might not be *exactly* the same, so `allclose` is used
-    # to compare the solutions.
-    assert_allclose(sol0, sol1)
-    assert_allclose(sol0, sol2)
-
-    # Verify that the number of jacobian evaluations was the same
-    # for all three calls of odeint.  This is a regression test--there
-    # was a bug in the handling of banded jacobians that resulted in
-    # an incorrect jacobian matrix being passed to the LSODA code.
-    # That would cause errors or excessive jacobian evaluations.
-    assert_array_equal(info0['nje'], info1['nje'])
-    assert_array_equal(info0['nje'], info2['nje'])
 
 
 if __name__ == "__main__":

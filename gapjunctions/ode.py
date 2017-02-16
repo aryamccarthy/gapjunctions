@@ -8,26 +8,17 @@ class RelaxationIntegrator
 
 A subclass of the SciPy ODE class.
 """
+from __future__ import division, print_function, absolute_import
 
 from scipy.integrate import _ode
-from scipy.integrate import ode
 
-
-def runner(_, f, y0, t0, t1, rtol, atol, solout, nsteps, verbosity, f_params):
-    r = ode(f).set_integrator('dopri5', rtol=rtol, atol=atol,
-                              nsteps=nsteps, verbosity=verbosity)
-    r.set_solout(solout)
-    r.set_f_params(*f_params)
-    r.set_initial_value(y0, t0)
-    r.integrate(t1)
-    assert r.successful()
-    return r.t, r.y
+from . import _odecore
 
 
 class RelaxationIntegrator(_ode.IntegratorBase):
     """Integrator capable of handling discontinuous, coupled equations."""
 
-    runner = runner  # TODO: Switch to WR runner.
+    runner = getattr(_odecore, 'runner', None)
     name = 'relax'
     supports_solout = True
 
