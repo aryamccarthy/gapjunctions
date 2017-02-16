@@ -5,6 +5,7 @@ language: python
 python: 3.5
 
 cache: pip
+env: # important!
 matrix:
     fast_finish: true
 
