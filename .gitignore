@@ -1,6 +1,9 @@
 # File produced during testing ODE
 fort.1
 
+# Idea files
+.idea/
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
