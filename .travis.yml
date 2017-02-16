@@ -5,16 +5,16 @@ language: python
 python: 3.5
 
 cache: pip
-env: # important!
+
+env:
+  - TOXENV=py35
+  - TOXENV=py34
+  - TOXENV=py27
+  - TOXENV=pypy
+  - TOXENV=flake8
+
 matrix:
     fast_finish: true
-
-    env:
-      - TOXENV=py35
-      - TOXENV=py34
-      - TOXENV=py27
-      - TOXENV=pypy
-      - TOXENV=flake8
 
     allow_failures:
       - env: TOXENV=flake8
