@@ -6,7 +6,7 @@ Gap Junctions
 .. image:: https://img.shields.io/pypi/v/gapjunctions.svg
         :target: https://pypi.python.org/pypi/gapjunctions
 
-.. image:: https://img.shields.io/travis/aryamccarthy/gapjunctions.svg
+.. image:: https://img.shields.io/travis/aryamccarthy/gapjunctions.svg?branch=master
         :target: https://travis-ci.org/aryamccarthy/gapjunctions.svg?branch=master
 
 .. image:: https://readthedocs.org/projects/gapjunctions/badge/?version=latest
