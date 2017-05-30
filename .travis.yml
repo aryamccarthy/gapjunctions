@@ -7,6 +7,7 @@ python: 3.5
 cache: pip
 
 env:
+  - TOXENV=py36
   - TOXENV=py35
   - TOXENV=py34
   - TOXENV=py27
