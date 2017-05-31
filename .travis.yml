@@ -1,30 +1,36 @@
 # Config file for automatic testing at travis-ci.org
-# This file will be regenerated if you run travis_pypi_setup.py
 
+sudo: false
 language: python
-python: 3.5
-
-cache: pip
-
-env:
-  - TOXENV=py35
-  - TOXENV=py34
-  - TOXENV=py27
-  - TOXENV=pypy
-  - TOXENV=flake8
 
 matrix:
-    fast_finish: true
+    include:
+      - python: 2.7
+        env: TOX_ENV=py27
+      - python: 3.3
+        env: TOX_ENV=py33
+      - python: 3.4
+        env: TOX_ENV=py34
+      - python: 3.5
+        env: TOX_ENV=py35
+      - python: 3.6
+        env: TOX_ENV=py36
+      # - python: pypy
+      #   env: TOX_ENV=pypy
+      - python: 3.5
+        env: TOX_ENV=flake8
 
-    allow_failures:
-#      - env: TOXENV=flake8
-      - env: TOXENV=pypy
+script: tox -e $TOX_ENV
 
-# command to install dependencies, e.g. pip install -r requirements.txt --use-mirrors
-install: pip install -U tox
+install:
+    - pip install tox
 
-# command to run tests, e.g. python setup.py test
-script: tox -e ${TOXENV}
+
+after_success:
+    # Report coverage results to codecov.io
+    # and export tox environment variables
+    - pip install codecov
+    - codecov -e TOX_ENV TRAVIS_OS_NAME
 
 # After you create the Github repo and add it to Travis, run the
 # travis_pypi_setup.py script to finish PyPI deployment setup
