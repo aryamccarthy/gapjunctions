@@ -14,9 +14,12 @@ requirements = [
     # TODO: put package requirements here
 ]
 
-test_requirements = [
-    # TODO: put package test requirements here
-]
+with open('requirements.txt') as requirements_file:
+    requirements.extend(requirements_file.read().splitlines())
+
+
+with open('test_requirements.txt') as test_requirements_file:
+    test_requirements = test_requirements_file.read().splitlines()
 
 setup(
     name='gapjunctions',
