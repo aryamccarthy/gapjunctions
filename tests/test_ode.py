@@ -11,7 +11,8 @@ from numpy.testing import (assert_, TestCase, run_module_suite,
                            assert_array_equal, assert_equal)
 from scipy.integrate import odeint, ode
 
-# from gapjunctions import ode as myode
+from gapjunctions import ode as myode
+_ = myode
 
 
 class TestOde(TestCase):
