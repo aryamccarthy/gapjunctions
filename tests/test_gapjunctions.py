@@ -9,14 +9,11 @@ Tests for `gapjunctions` module.
 """
 
 
-import sys
 import unittest
-from contextlib import contextmanager
 from click.testing import CliRunner
 
-from gapjunctions import gapjunctions
+# from gapjunctions import gapjunctions
 from gapjunctions import cli
-
 
 
 class TestGapjunctions(unittest.TestCase):
