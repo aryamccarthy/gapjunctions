@@ -4,7 +4,7 @@ Tests for numerical integration.
 """
 from __future__ import division, print_function, absolute_import
 
-from numpy import allclose, array, dot, pi, sqrt, sin, cos, zeros
+from numpy import allclose, array, arange, dot, pi, sqrt, sin, cos, zeros
 from numpy.testing import (assert_, TestCase, run_module_suite,
                            assert_array_almost_equal, assert_allclose,
                            assert_array_equal, assert_equal)
