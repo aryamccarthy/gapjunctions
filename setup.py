@@ -21,7 +21,8 @@ test_requirements = [
 setup(
     name='gapjunctions',
     version='0.1.0',
-    description="Fast, accurate simulation of gap junctions in neural networks.",
+    description=("Fast, accurate simulation of gap junctions"
+                 " in neural networks."),
     long_description=readme + '\n\n' + history,
     author="Arya D. McCarthy",
     author_email='admccarthy@smu.edu',
